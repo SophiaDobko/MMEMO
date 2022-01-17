@@ -1,4 +1,4 @@
-#' Write new hydraulic parameteres
+#' Write new hydraulic parameters in SELECTOR.IN
 #'
 #' This function writes during hydrus calibration runs new hydraulic soil parameters in selector.in
 #' @param project.path directory of the folder containing the hydrus input file selector.in
@@ -7,12 +7,13 @@
 #' @importFrom data.table fwrite
 #' @export
 
-para <- data.frame(thr = c(1,2),
-                   ths = c(0,2),
-                   Alfa = c(1,2),
-                   n = c(1,2),
-                   Ks = c(1,2),
-                   l = c(1,2))
+# hydraulic parameter
+#para <- data.frame(thr = c(1,2),
+#                   ths = c(0,2),
+#                   Alfa = c(1,2),
+#                   n = c(1,2),
+#                   Ks = c(1,2),
+#                   l = c(1,2))
 
 hydpara <- function(project.path, para){
   
@@ -35,4 +36,5 @@ hydpara <- function(project.path, para){
       file = paste0(project.path, "/SELECTOR.IN"),
       fill = F,
       sep = "\n",
-      append = T)}
+      append = T)
+}
