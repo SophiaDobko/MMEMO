@@ -155,3 +155,4 @@ grid()
 for (i in 2:6) {
   lines(mod_obsnode$Time, mod_obsnode[,3*i], col=i)
 }
+
