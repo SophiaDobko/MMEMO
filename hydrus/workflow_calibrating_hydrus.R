@@ -7,13 +7,17 @@
 #    calibration with data of the profile probe.
 # 2. Take the exe. file of the cosmic operator
 # 3. Calibrate the cosmic parameter N with the script calibrating_cosmic_N.R
+#    and a forward modelling
 # 4. Copy the input files into the folder of the inverse project
+# 5. Run this script
+# 6. Start Hydrus model in the Hydrus interface
+# 7. Run this skript again from "read optimized parameter"
+# 8. Start Hydrus model again in the Hydrus interface and so on...
+#    never save the project inside the Hydrus interface!
 
-# ...
-# write selector
-# never save the project inside the Hydrus interface
-# docu
 
+library(hydrusR)
+library(hydroGOF)
 
 setwd("C:/Users/bauers/data/Hydrus-1D/Hydrus-R/Prepare_Hydrus_Input")
 project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_2_invers"
@@ -21,6 +25,7 @@ project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_2_invers"
 source("C:/Users/bauers/data/MMEMO/hydrus/hydpara_fitin.R")
 source("C:/Users/bauers/data/MMEMO/hydrus/hydpara_selector.R")
 source("C:/Users/bauers/data/MMEMO/hydrus/read_optimized_parms.R")
+source("C:/Users/bauers/data/MMEMO/hydrus/goodness_function_plots.R")
 
 
 # hydraulic parameter
@@ -51,21 +56,23 @@ mat <- rbind(para[1,],
              c(0,0,0,0,1000,0))
 
 
+# read optimized parameter
+(fitout <- readoptim(project.path = project.path))
+
+# goodness function and plot model results
+(goods <- goodness(project.path = project.path))
 
 # number of material to be optimized next
 n <- 1
-
 # number of material that was optimized last
 m <- 1
-
 # parms to be optimized next (yes/no)
 #           thr   ths   Alpha  n     Ks   l
-poptim <- c( 0 ,   0 ,   1 ,   1 ,   0 ,  0 )
+poptim <- c( 0 ,   0 ,   1 ,   1 ,   1 ,  0 )
 
+#fitout <- NULL  # to set parameter to initial values
 
-
-writefit(project.path=project.path, para=para, mat=mat, m=m, n=n, poptim=poptim)
-
+# write new input files
+para <- writefit(project.path=project.path, para=para, mat=mat, m=m, n=n, poptim=poptim)
 hydpara(project.path=project.path, para=para)
 
-readoptim()
