@@ -12,18 +12,23 @@ nmat = 4
 nobsdata = 178
 
 # Number of iterations
-niter = 9
+niter = 11
 
-readoptim <- function(project.path, nmat, nobsdata, niter){
+
+
+readoptim <- function(project.path){
   
   # read Fit.out file
-  fitout = read.table(paste0(project.path, "/Fit.out"),
-                     skip = (15+    # headings
-                             10*nmat+  # number soil materials
-                             3+
-                             nobsdata+   # number observed data
-                             6),
-                     nrow = niter,       # number of iterations
-                     header = T)
+  options(warn = -1)
+  fitout = data.table::fread(
+            input = paste0(project.path, "/Fit.out"),
+            skip = " Iteration     SSQ         ALPHA       N     ",
+            header = T,
+            fill = F,
+            blank.lines.skip = F,
+            nrows = 21)
   
+  return(fitout)
 }
+
+
