@@ -9,36 +9,6 @@
 
 
 
-# materials
-mat <- rbind(para[1,],
-              c(0,0,0,0,0,0),   # parameter optimized? yes/no
-              c(0,0,0,0,5,0),   # min values
-              c(0,0,0,0,1000,0), # max values
-              para[2,],
-              c(0,0,0,0,0,0),
-              c(0,0,0,0,5,0),
-              c(0,0,0,0,1000,0),
-             para[3,],
-             c(0,0,0,0,0,0),
-             c(0,0,0,0,5,0),
-             c(0,0,0,0,1000,0),
-             para[4,],
-             c(0,0,0,0,0,0),
-             c(0,0,0,0,5,0),
-             c(0,0,0,0,1000,0))
-
-
-# number of material to be optimized next
-n <- 1
-
-# number of material that was optimized last
-m <- 1
-
-# parms to be optimized next (yes/no)
-#           thr   ths   Alpha  n     Ks   l
-poptim <- c( 0 ,   0 ,   1 ,   1 ,   0 ,  0 )
-
-
 
 writefit <- function(project.path, para, mat, m, n, poptim){  # works only for model with 4 materials!
   
@@ -58,6 +28,7 @@ writefit <- function(project.path, para, mat, m, n, poptim){  # works only for m
   mat[9,] <- para[3,]
   mat[13,] <- para[4,]
                
+  mat[(4*c(1:4)-2),] <- c(0,0,0,0)
   mat[(4*n-2),] <- poptim
   
   # write soil hydraulic parameters in fit.in
@@ -96,5 +67,13 @@ writefit <- function(project.path, para, mat, m, n, poptim){  # works only for m
       sep = "\n",
       append = T)
   
-  para <- return(para)
+  # para docu
+  para_g <- data.frame(para, 
+                       RMSE = c(NA,NA,NA,goods[1]),
+                       R2 = c(NA,NA,NA,goods[2]),
+                       NSE = c(NA,NA,NA,goods[3]))
+  fwrite(x = as.list(para_g), file = "para_set.txt",
+         sep = "\t", col.names = T, append = T)
+  
+  return(para)
 }
