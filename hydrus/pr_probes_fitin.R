@@ -21,15 +21,22 @@ library(tidyverse)
 # - if needed, edit further materials and its soil hydraulic properties (e.g. sand from implemented soil catalog)
 # - Run inverse calibration!!!
 
+comp <- Sys.getenv("COMPUTERNAME")
+if(comp == "GK-NB-5"){
+  setwd("D:/CosmicSense/Hydrus")
+  crns_dir <- "C:/Users/Dobkowitz/data/crns/"}
+
 tz = "etc/GMT-1"
 start_date <- as.POSIXct("2021-04-18", tz)
 end_date <- as.POSIXct("2021-11-24", tz)
-project_path
+nbefore = 107 # number of days in the year before start_date
+project_name = "Hydrus_inv_pr1"
+project_path = paste0(getwd(), "/", project_name)
 products_dir <- "C:/Users/dobkowitz/git/cosmicsense-notebooks/notebooks/sponheim_rhinluch/timeseries_product/"
 pr_plot <- "center" # or "t25", "f25", "t50", "f50"
 
-pr_probes_fitin <- function(para, products_dir, project_path, pr_plot, start_date, end_date, tz = "etc/GMT-1"){
-  # Read in and formatation of pr data
+# Read in and formatation of pr data
+pr_prepare <- function(para, products_dir, project_path, pr_plot, start_date, end_date, tz = "etc/GMT-1"){
   pr <- read.table(paste0(products_dir,"Rhi1_pr_product.txt"), sep = ",", header = T)
   pr <- pr[pr$plot==pr_plot,]
   pr$datetime <- as.POSIXct(pr$datetime, format = "%Y-%m-%d %H:%M:%S", tz)
@@ -49,9 +56,14 @@ pr_probes_fitin <- function(para, products_dir, project_path, pr_plot, start_dat
   prtidy$WTS <- rep(1, nrow(prtidy))
   colnames(prtidy)[1] <- "HO(N)"
   prtidy <- prtidy[,c(1,3,5,4,6)]
-  prtidy$`HO(N)` <- prtidy$`HO(N)` + 107 # add number of days in the year before start_date
-  
-  # write pr soil moisture observations to fitin
+  prtidy$`HO(N)` <- prtidy$`HO(N)` + nbefore # add number of days in the year before start_date
+  return(prtidy)
+}
+
+
+# write pr soil moisture observations to fitin
+pr_fitin <- function(para, products_dir, project_path, pr_plot, start_date, end_date, tz = "etc/GMT-1"){
+ 
   fitin = readLines(con = paste0(project_path, "/FIT.IN"),
                     n = -1L,
                     encoding = "unknown")
