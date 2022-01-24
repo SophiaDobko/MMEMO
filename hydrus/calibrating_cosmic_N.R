@@ -16,6 +16,19 @@ setwd("C:/Users/bauers/data/Hydrus-1D/Hydrus-R/Prepare_Hydrus_Input")
 
 project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_2"
 
+# Set bulk densitiy and lattice water in cosmic.in file
+bd <- 1.46 # buld density
+lw <- 0.023 # lattice water
+alpha <- 0.404 - 0.101*bd
+L3 <- -31.65 + 99.29*bd
+N <- 611  # initial value 
+
+cosmic.in <- read.table(paste0(project.path,"/Cosmic.in"), sep="\t")
+cosmic.in[,1] <- c(bd, lw, N, alpha, cosmic.in[5:6,1], L3, cosmic.in[8,1])
+write.table(cosmic.in, paste0(project.path,"/Cosmic.in"), sep="\t", row.names=F,
+            col.names=F, quote=F)
+
+
 # Run hydrus model ####
 call.H1D(project.path,
          hydrus.path = "C:/Users/bauers/Hydrus-1D 4.xx",

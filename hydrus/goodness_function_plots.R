@@ -2,6 +2,7 @@
 #
 #end time for crns data has to be updated!!
 
+library(hydroGOF)
 
 ##### Read CRNS data #####
 crns0 <- read.table("C:/Users/bauers/data/crns/Spo0_df24_hourly.txt", header=T, sep=",")
@@ -74,14 +75,16 @@ goodness <- function(project.path) {
          col=c(1,2,4), lwd=2, cex=0.9)
   
   # Plot theta of observation nodes
-  plot(mod_obsnode$Time, mod_obsnode[,3], type="l", ylim=c(0.1,0.4),
+  plot(mod_obsnode$Time, mod_obsnode[,3], type="l", ylim=c(0.09,0.4),
        xlab = "Time", ylab = "Theta")
-  grid()
+  grid(nx=0, ny=NULL)
   for (i in 2:6) {
     lines(mod_obsnode$Time, mod_obsnode[,3*i], col=i)
   }
+  abline(v=range(crns0$datetime), lty="dashed")
+  abline(v=c(min(crns1$datetime), max(crns$datetime)),  lty="dashed")
   legend("bottomright", c("10cm","20cm","30cm","40cm","60cm","100cm"),
-         col=c(1:6), lwd=2, cex=0.8, bty="n")
+         col=c(1:6), lwd=2, cex=0.8, bty="o", ncol=2)
   
   goods <- c(rmse, r_2, nse)
 
