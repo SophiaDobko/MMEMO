@@ -12,6 +12,7 @@
 # 5. Run this script
 # 6. Start Hydrus model in the Hydrus interface
 # 7. Run this skript again from "read optimized parameter"
+#    n, m and poptim must be specified manually
 # 8. Start Hydrus model again in the Hydrus interface and so on...
 #    never save the project inside the Hydrus interface!
 
@@ -70,7 +71,7 @@ m <- 1
 #           thr   ths   Alpha  n     Ks   l
 poptim <- c( 0 ,   0 ,   1 ,   1 ,   1 ,  0 )
 
-#fitout <- NULL  # to set parameter to initial values
+#fitout <- NULL  # take this to set parameter to initial values
 
 # write new input files
 para <- writefit(project.path=project.path, para=para, mat=mat, m=m, n=n, poptim=poptim)
