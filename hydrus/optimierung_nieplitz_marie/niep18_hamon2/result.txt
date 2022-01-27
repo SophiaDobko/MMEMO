@@ -1,0 +1,4 @@
+"value" "par" "function_calls" "break_flag"
+"1" 0.945523818750468 0.137201109024521 5000 "max number of function calls reached"
+"2" 0.945523818750468 2.75 5000 "max number of function calls reached"
+"3" 0.945523818750468 600 5000 "max number of function calls reached"
