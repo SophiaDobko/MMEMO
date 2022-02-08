@@ -13,13 +13,6 @@ library(hydrusR)
 #install.packages("tidyverse")
 library(tidyverse)
 
-# Manually in the GUI:
-# - Max number of iterations, e.g. 10 or 100
-# - Number of Data Points in Objective Function, Ndepths x Ntimesteps = 4x189 = 756
-#       4x61 = 244
-# - set water flow boundary conditions to lower boundary condition: variable pressure head
-# - if needed, edit further materials and its soil hydraulic properties (e.g. sand from implemented soil catalog)
-# - Run inverse calibration!!!
 
 comp <- Sys.getenv("COMPUTERNAME")
 if(comp == "GK-NB-5"){
@@ -48,10 +41,10 @@ pr_prepare <- function(para, products_dir, project_path, pr_plot, start_date, en
   
   prtidy <- gather(pr, key = "probe", value = "FOS","theta_1", "theta_2", "theta_3", "theta_4")
   #prtidy$POS <- paste0(substr(prtidy$probe,7,7),"0")
-  prtidy$POS[prtidy$probe=="theta_1"] <- 1
-  prtidy$POS[prtidy$probe=="theta_2"] <- 2
-  prtidy$POS[prtidy$probe=="theta_3"] <- 3
-  prtidy$POS[prtidy$probe=="theta_4"] <- 4
+  prtidy$POS[prtidy$probe=="theta_1"] <- 2
+  prtidy$POS[prtidy$probe=="theta_2"] <- 3
+  prtidy$POS[prtidy$probe=="theta_3"] <- 4
+  prtidy$POS[prtidy$probe=="theta_4"] <- 5
   prtidy$'ITYPE(N)' <- rep(2,nrow(prtidy))
   prtidy$WTS <- rep(1, nrow(prtidy))
   colnames(prtidy)[1] <- "HO(N)"
