@@ -10,10 +10,9 @@
 
 
 
-writefit <- function(project.path, para, mat, m, n, poptim){  # works only for model with 4 materials!
+writefit <- function(project.path, para, mat, nmat, m, n, poptim){  # works only for model with 4 materials!
   
   # write optimized parameter of the last iteration into para
-  # material number must be specified (rownumber of para)!!!
   if(!is.null(fitout$WCR))  para[m,]$thr <- fitout$WCR[nrow(fitout)]
   if(!is.null(fitout$WCS))  para[m,]$ths <- fitout$WCS[nrow(fitout)]
   if(!is.null(fitout$ALPHA)) para[m,]$Alpha <- fitout$ALPHA[nrow(fitout)]
@@ -23,12 +22,9 @@ writefit <- function(project.path, para, mat, m, n, poptim){  # works only for m
   
 
   # materials
-  mat[1,] <- para[1,]
-  mat[5,] <- para[2,]
-  mat[9,] <- para[3,]
-  mat[13,] <- para[4,]
+  mat[(1+4*seq(0, length.out=nmat)),] <- para
                
-  mat[(4*c(1:4)-2),] <- c(0,0,0,0)
+  mat[(2+4*seq(0, length.out=nmat)),] <- rep(0, 6)
   mat[(4*n-2),] <- poptim
   
   # write soil hydraulic parameters in fit.in
@@ -40,40 +36,28 @@ writefit <- function(project.path, para, mat, m, n, poptim){  # works only for m
       fill = F,
       sep = "\n")
   
-  fwrite(x = as.list(mat[1:4,]),
+  for (i in seq(0, length.out=nmat)) {
+    fwrite(x = as.list(mat[seq((i*4+1), length.out=4),]),
          file = paste0(project.path, "/FIT.IN"),
          sep = "\t",
          col.names=T,
-         append=T)
-  fwrite(x = as.list(mat[5:8,]),
-         file = paste0(project.path, "/FIT.IN"),
-         sep = "\t",
-         col.names=T,
-         append=T)
-  fwrite(x = as.list(mat[9:12,]),
-         file = paste0(project.path, "/FIT.IN"),
-         sep = "\t",
-         col.names=T,
-         append=T)
-  fwrite(x = as.list(mat[13:16,]),
-         file = paste0(project.path, "/FIT.IN"),
-         sep = "\t",
-         col.names=T,
-         append=T)
+         append=T) }
   
-  cat(fitin[(11+5*nrow(para)):length(fitin)],
+    cat(fitin[(11+5*nrow(para)):length(fitin)],
       file = paste0(project.path, "/FIT.IN"),
       fill = F,
       sep = "\n",
       append = T)
   
-  # para docu
-  para_g <- data.frame(para, 
-                       RMSE = c(NA,NA,NA,goods[1]),
-                       R2 = c(NA,NA,NA,goods[2]),
-                       NSE = c(NA,NA,NA,goods[3]))
-  fwrite(x = as.list(para_g), file = "para_set.txt",
-         sep = "\t", col.names = T, append = T)
-  
+    
+    # para docu
+    para_g <- data.frame(para, 
+                         RMSE = c(rep(NA, nmat-1),goods[1]),
+                         R2 = c(rep(NA, nmat-1),goods[2]),
+                         NSE = c(rep(NA, nmat-1),goods[3]))
+    fwrite(x = as.list(para_g), file = paste0(project.path,"/para_calibration.txt"),
+           sep = "\t", col.names = T, append = T)
+    
+    
   return(para)
 }

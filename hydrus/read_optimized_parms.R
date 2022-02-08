@@ -2,17 +2,17 @@
 #
 #
 
-project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_2_invers"
+#project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_2_invers"
 
 
 # Number of soil materials
-nmat = 4
+#nmat = 3
 
 # Number of observed data
-nobsdata = 178
+#nobsdata = 334
 
 # Number of iterations
-niter = 11
+#niter = 11
 
 
 
@@ -22,7 +22,7 @@ readoptim <- function(project.path){
   options(warn = -1)
   fitout = data.table::fread(
             input = paste0(project.path, "/Fit.out"),
-            skip = " Iteration     SSQ         ALPHA       N     ",
+            skip = " Iteration     SSQ      ",
             header = T,
             fill = F,
             blank.lines.skip = F,
