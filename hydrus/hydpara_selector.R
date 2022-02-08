@@ -15,7 +15,7 @@
 #                   Ks = c(1,2),
 #                   l = c(1,2))
 
-hydpara <- function(project.path, para){
+hydpara_selector <- function(project.path, para){
   
   # write soil hydraulic parameters in selector.in
   selector = readLines(con = paste0(project.path, "/SELECTOR.IN"),
