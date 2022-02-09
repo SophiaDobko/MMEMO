@@ -34,7 +34,7 @@ pr_prepare <- function(para, products_dir, project_path, pr_plot, start_date, en
   pr <- pr[pr$plot==pr_plot,]
   pr$datetime <- as.POSIXct(pr$datetime, format = "%Y-%m-%d %H:%M:%S", tz)
   pr$date <- as.Date(pr$datetime)
-  pr <- pr[pr$date>= start_date & pr$date<= end_date,]
+  pr <- pr[pr$datetime>= start_date & pr$datetime<= end_date,]
   pr <- aggregate(x = pr[,4:7], by = list(pr$date), FUN = mean)
   colnames(pr)[1] <- "date"
   pr$date <- 1:nrow(pr)
