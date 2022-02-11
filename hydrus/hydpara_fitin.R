@@ -51,7 +51,8 @@ writefit <- function(project.path, para, mat, nmat, m, n, poptim){  # works only
   
     
     # para docu
-    para_g <- data.frame(para, 
+    para_g <- data.frame(N=cosmic.in[3,1],
+                         para, 
                          RMSE = c(rep(NA, nmat-1),goods[1]),
                          R2 = c(rep(NA, nmat-1),goods[2]),
                          NSE = c(rep(NA, nmat-1),goods[3]))

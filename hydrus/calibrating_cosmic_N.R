@@ -14,14 +14,14 @@ library(hydroGOF)
 
 setwd("C:/Users/bauers/data/Hydrus-1D/Hydrus-R/Prepare_Hydrus_Input")
 
-project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_4"
+project.path = "C:/Users/bauers/data/Hydrus-1D/Projects/spo_cosmic_7_invers"
 
 # Set bulk densitiy and lattice water in cosmic.in file
 bd <- 1.46 # buld density
-lw <- 0.023 # lattice water
+lw <- 0.0469 # lattice water
 alpha <- 0.404 - 0.101*bd
 L3 <- -31.65 + 99.29*bd
-N <- 618  # initial value 
+N <- 630  # initial value 
 
 cosmic.in <- read.table(paste0(project.path,"/Cosmic.in"), sep="\t")
 cosmic.in[,1] <- c(bd, lw, N, alpha, cosmic.in[5:6,1], L3, cosmic.in[8,1])
@@ -142,7 +142,7 @@ while #(abs(nse - nse_old)>0.005) {
 cosmic.in[3,1] <- docu[nrow(docu)-1, 1]
 write.table(cosmic.in, paste0(project.path,"/Cosmic.in"), sep="\t", row.names=F,
             col.names=F, quote=F)
-#write.table(docu, "docu_N_fit_cosmic_4.txt", sep="\t", row.names=F,col.names=T, quote=F)
+#write.table(docu, "docu_N_fit_cosmic_7neu.txt", sep="\t", row.names=F,col.names=T, quote=F)
 
 
 

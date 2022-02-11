@@ -59,15 +59,17 @@ goodness <- function(project.path) {
   
   ##### plot model output against data ####
   #oldpar <- par()
-  par(las=0, mfrow=c(3,1), mgp=c(2.5,0.7,0), mar=c(2,3.5,1,1))
+  par(las=0, mfrow=c(3,1), mgp=c(2.5,0.7,0), mar=c(1.8,3.5,0.5,1))
   plot(mod_cosmic, type="l", ylim=c(2100,3200))
   lines(crns0$datetime, crns0$cphc, col=3)
   lines(crns1$datetime, crns1$cphc, col=4)
   lines(crns2$datetime, crns2$cphc, col=2)
+  legend("topright", c("model data", "CRNS 0", "CRNS 1", "CRNS 2"), col=c(1,3,4,2),
+         lwd=2, cex=0.9)
   
   # Plot model fluxes 
   #par(las=1, mgp=c(2.5,0.7,0), mar=c(2,3.5,1,1))
-  plot(mod_flux$Time, mod_flux$sum_vRoot, type="l", ylim=c(-30,30),
+  plot(mod_flux$Time, mod_flux$sum_vRoot, type="l", ylim=c(-35,30),
        xlab = "Time", ylab = "Flux [cm]")
   lines(mod_flux$Time, mod_flux$sum_vTop, col=2)
   lines(mod_flux$Time, mod_flux$sum_Bot, col=4)
@@ -83,8 +85,8 @@ goodness <- function(project.path) {
   }
   abline(v=range(crns0$datetime), lty="dashed")
   abline(v=c(min(crns1$datetime), max(crns$datetime)),  lty="dashed")
-  legend("bottomright", c("10cm","20cm","30cm","40cm","60cm","100cm"),
-         col=c(1:6), lwd=2, cex=0.8, bty="o", ncol=2)
+  legend("bottomright", c("10cm","20cm","30cm","40cm","60cm","100cm","calibrating period"),
+         col=c(1:6), cex=0.8, bty="o", ncol=3, lty=c(rep("solid",6),"dashed"))
   
   goods <- c(rmse, r_2, nse)
   
