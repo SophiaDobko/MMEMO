@@ -29,7 +29,7 @@ products_dir <- "C:/Users/dobkowitz/git/cosmicsense-notebooks/notebooks/sponheim
 pr_plot <- "center" # or "t25", "f25", "t50", "f50"
 
 # Read in and formatation of pr data
-pr_prepare <- function(para, products_dir, project_path, pr_plot, start_date, end_date, tz = "etc/GMT-1"){
+pr_prepare <- function(products_dir, project_path, pr_plot, start_date, end_date, tz = "etc/GMT-1"){
   pr <- read.table(paste0(products_dir,"Rhi1_pr_product.txt"), sep = ",", header = T)
   pr <- pr[pr$plot==pr_plot,]
   pr$datetime <- as.POSIXct(pr$datetime, format = "%Y-%m-%d %H:%M:%S", tz)
